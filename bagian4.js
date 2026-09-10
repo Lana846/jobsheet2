@@ -33,3 +33,8 @@ reviews: [
 const seluruhTags = products.flatMap(product => product.tags);
 console.log(seluruhTags);
 
+const seluruhKomentar = products.flatMap(product => 
+  product.reviews.map(review => review.comment)
+);
+
+console.log(seluruhKomentar);
