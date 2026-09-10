@@ -1,11 +1,16 @@
-let hargaBaju = 150000;
-let diskon = 20;
-
 function calculatedDiscountPrice (price, discountPercent){
     return price - (price * discountPercent)/100
 }
-let hargaSetelahDiskon = calculatedDiscountPrice(hargaBaju, diskon);
 
-console.log("harga awal: Rp",hargaBaju);
-console.log("diskon:",diskon + "%");
-console.log("harga bayar: Rp",hargaSetelahDiskon);
+const cart = [
+    {title: "Laptop", price: 1000,discountPercent: 10},
+    {title: "Mouse", price: 20,discountPercent: 5},
+    {title: "Keyboard", price: 50,discountPercent: 0},
+]
+
+for (let item of cart){
+    let hargaAkhir =calculatedDiscountPrice(item.price, item.discountPercent);
+    console.log("produk: " + item.title);
+    console.log("harga setelah diskon: " + hargaAkhir);
+    
+}
