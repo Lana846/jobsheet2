@@ -13,3 +13,17 @@ console.log(hasilPencarian);
 
 const lowStockProducts = products.filter(product => product.stock < 10)
 console.log("produk dengan stock sedikit: ",lowStockProducts)
+
+function updateStock(products, id, newStock){
+    return products.map(product => {
+        if (product.id === id){
+            return {...product, stock: newStock}
+        }
+        return product;
+        });
+}
+
+const updateProducts = updateStock(products, 1, 100)
+let produkLaptop = updateProducts.find(p => p.id === 1);
+console.log(produkLaptop.title); 
+console.log(produkLaptop.stock);
