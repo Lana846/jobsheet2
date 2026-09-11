@@ -34,4 +34,14 @@ const laptopPrice = products.filter(p => p.category === "laptops").map(p => p.pr
 const averageLaptopPrice = laptopPrice.reduce((a, b) =>a + b, 0)/laptopPrice.length;
 console.log("Rata-rata harga laptop:", averageLaptopPrice);
 
-
+function getStatistic(products) {
+    const totalProduct =products.length;
+    return {
+        totalProducts: totalProduct,
+        averagePrice: products.reduce((sum, p) => sum + p.price, 0)/ totalProduct,
+        maxPrice: Math.max(... products.map(p => p.price)),
+        lowestPrice: Math.min(... products.map(p => p.price)),
+        totalStock: products.reduce((sum, p) => sum + p.stock, 0),
+        averageRating: products.reduce((sum, p => sum + p.stock)/totalProduct)
+    }
+}
