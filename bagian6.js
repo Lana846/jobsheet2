@@ -5,6 +5,20 @@ function linearSearch(array, target){
             return i;
         }
     }
-    return -1;
+    return "gagal";
 }
-console.log(linearSearch(dataAngka, 70));
+console.log(linearSearch(dataAngka, 0));
+
+const produk = [
+    {id:1, title:"laptop"},
+    {id:2, title:"smartphone"}
+];
+function linearSearch(produk, targetId){
+    for(let i = 0; i < produk.length; i++){
+        if (produk[i].id === targetId){
+            return i;
+        }
+    }
+    return "gagal";
+}
+console.log(linearSearch(produk, 3));
