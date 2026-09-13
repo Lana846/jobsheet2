@@ -37,3 +37,37 @@ const hasilBinary = binarySearchWithCount(dataBesar, targetCari);
 
 console.log(`Linear Search -> Menemukan dalam ${hasilLinear.langkah} langkah.`);
 console.log(`Binary Search -> Menemukan dalam ${hasilBinary.langkah} langkah.`);
+
+const produk1000 = Array.from({ length: 1000 }, (_, i) => ({
+  id: i + 1,
+  category: `kategori-${i % 10}` 
+}));
+
+function cariPasanganNestedLoop(products) {
+  let operasi = 0;
+  for (let i = 0; i < products.length; i++) {
+    for (let j = i + 1; j < products.length; j++) {
+      operasi++;
+      if (products[i].category === products[j].category) {
+      }
+    }
+  }
+  return operasi;
+}
+
+function cariPasanganMap(products) {
+  let operasi = 0;
+  const mapKategori = new Map();
+  
+  for (const p of products) {
+    operasi++;
+    if (!mapKategori.has(p.category)) {
+      mapKategori.set(p.category, 0);
+    }
+    mapKategori.set(p.category, mapKategori.get(p.category) + 1);
+  }
+  return operasi;
+}
+
+console.log("Operasi Nested Loop:", cariPasanganNestedLoop(produk1000));
+console.log("Operasi Grouping Map:", cariPasanganMap(produk1000)); 
