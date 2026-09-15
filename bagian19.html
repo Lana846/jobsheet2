@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Latihan DOM dan State Management</title>
+    <style>
+        .product-card {
+            border: 1px solid #ccc;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    
+    <div id="controls">
+        <input type="text" id="search-input" placeholder="Cari nama produk...">
+        
+        <select id="category-select">
+            <option value="all">Semua Kategori</option>
+            <option value="Makanan">Makanan</option>
+            <option value="Minuman">Minuman</option>
+        </select>
+
+        <select id="sort-select">
+            <option value="default">Urutan Default</option>
+            <option value="termurah">Termurah</option>
+            <option value="termahal">Termahal</option>
+        </select>
+    </div>
+    <div id="product-list"></div>
+    <script src="bagian19.js" defer></script>
+</body>
+</html>
