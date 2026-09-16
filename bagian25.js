@@ -38,3 +38,46 @@ function getStatistics(products) {
             / products.length
     };
 }
+
+function getCategoryAnalytics(products) {
+
+    const groups = products.reduce((result, product) => {
+
+        if (!result[product.category]) {
+            result[product.category] = [];
+        }
+
+        result[product.category].push(product);
+
+        return result;
+
+    }, {});
+
+    return Object.entries(groups).map(
+        ([category, products]) => ({
+
+            category,
+
+            totalProducts:
+                products.length,
+
+            averagePrice:
+                products.reduce(
+                    (sum, p) => sum + p.price,
+                    0
+                ) / products.length,
+
+            averageRating:
+                products.reduce(
+                    (sum, p) => sum + p.rating,
+                    0
+                ) / products.length,
+
+            totalStock:
+                products.reduce(
+                    (sum, p) => sum + p.stock,
+                    0
+                )
+        })
+    );
+}
