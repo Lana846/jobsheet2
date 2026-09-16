@@ -81,3 +81,188 @@ function getCategoryAnalytics(products) {
         })
     );
 }
+
+function exactSearch(products, keyword) {
+
+    return products.filter(
+        p => p.title === keyword
+    );
+
+}
+
+function partialSearch(products, keyword) {
+
+    const lowerKeyword =
+        keyword.toLowerCase();
+
+    return products.filter(
+        p =>
+            p.title
+                .toLowerCase()
+                .includes(lowerKeyword)
+    );
+
+}
+
+function caseInsensitiveSearch(
+    products,
+    keyword
+) {
+
+    const lowerKeyword =
+        keyword.toLowerCase();
+
+    return products.filter(
+        p =>
+            p.title
+                .toLowerCase()
+                .includes(lowerKeyword)
+    );
+
+}
+
+function displayProducts(products) {
+
+    console.table(
+        products.map(p => ({
+
+            id: p.id,
+
+            title: p.title,
+
+            price: p.price,
+
+            category: p.category,
+
+            rating: p.rating,
+
+            stock: p.stock
+
+        }))
+    );
+
+}
+
+async function main() {
+
+    try {
+
+        const products =
+            await fetchProducts();
+
+        console.log(
+            `Total data: ${products.length}`
+        );
+
+        console.log(
+            "\n===== STATISTICS ====="
+        );
+
+        const statistics =
+            getStatistics(products);
+
+        console.log(
+            "Total Products:",
+            statistics.totalProducts
+        );
+
+        console.log(
+            "Average Price:",
+            statistics.averagePrice.toFixed(2)
+        );
+
+        console.log(
+            "Highest Price:",
+            statistics.highestPrice
+        );
+
+        console.log(
+            "Lowest Price:",
+            statistics.lowestPrice
+        );
+
+        console.log(
+            "Total Stock:",
+            statistics.totalStock
+        );
+
+        console.log(
+            "Average Rating:",
+            statistics.averageRating.toFixed(2)
+        );
+
+        console.log(
+            "\n===== CATEGORY ANALYTICS ====="
+        );
+
+        const categoryAnalytics =
+            getCategoryAnalytics(products);
+
+        console.table(
+            categoryAnalytics
+        );
+
+        const exactKeyword =
+            products[0].title;
+
+        console.log(
+            "\n===== EXACT SEARCH ====="
+        );
+
+        console.log(
+            `Keyword: "${exactKeyword}"`
+        );
+
+        displayProducts(
+            exactSearch(
+                products,
+                exactKeyword
+            )
+        );
+
+        const partialKeyword =
+            exactKeyword.split(" ")[0];
+
+        console.log(
+            "\n===== PARTIAL SEARCH ====="
+        );
+
+        console.log(
+            `Keyword: "${partialKeyword}"`
+        );
+
+        displayProducts(
+            partialSearch(
+                products,
+                partialKeyword
+            )
+        );
+
+        const caseInsensitiveKeyword =
+            exactKeyword.toUpperCase();
+
+        console.log(
+            "\n===== CASE-INSENSITIVE SEARCH ====="
+        );
+
+        console.log(
+            `Keyword: "${caseInsensitiveKeyword}"`
+        );
+
+        displayProducts(
+            caseInsensitiveSearch(
+                products,
+                caseInsensitiveKeyword
+            )
+        );
+
+    } catch (error) {
+
+        console.error(
+            "Program gagal:",
+            error.message
+        );
+    }
+}
+
+main();
