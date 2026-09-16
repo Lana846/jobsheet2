@@ -1,142 +1,39 @@
-export function linearSearch(products, keyword) {
+export function getProductStatistics(products) {
+    if (!products.length) return null;
+    
+    // (1) Method: reduce
+    const totals = products.reduce((acc, p) => {
+        acc.sumPrice += p.price;
+        acc.sumStock += p.stock;
+        acc.sumRating += p.rating;
+        return acc;
+    }, { sumPrice: 0, sumStock: 0, sumRating: 0 });
 
-    if (keyword === "") {
-        return products;
-    }
+    const totalProducts = products.length;
 
-    return products.filter(product => {
-
-        return product.title
-            .toLowerCase()
-            .includes(keyword.toLowerCase());
-
-    });
-
+    return {
+        totalProducts,
+        averagePrice: totals.sumPrice / totalProducts,
+        totalStock: totals.sumStock,
+        averageRating: totals.sumRating / totalProducts,
+    };
 }
 
-
-export function binarySearch(products, keyword) {
-
-    const sortedProducts = [...products].sort((a, b) => {
-
-        return a.title.localeCompare(b.title);
-
-    });
-
-
-    let left = 0;
-    let right = sortedProducts.length - 1;
-
-
-    while (left <= right) {
-
-        const middle = Math.floor(
-            (left + right) / 2
-        );
-
-
-        const name =
-            sortedProducts[middle].title.toLowerCase();
-
-
-        if (name.includes(keyword.toLowerCase())) {
-
-            return [sortedProducts[middle]];
-
-        }
-
-
-        if (name < keyword.toLowerCase()) {
-
-            left = middle + 1;
-
-        } else {
-
-            right = middle - 1;
-
-        }
-
-    }
-
-
-    return [];
-
+export function smartSearch(products, keyword) {
+    if (!keyword) return products;
+    const lower = keyword.toLowerCase();
+    // (2) Method: filter
+    return products.filter(p => p.title.toLowerCase().includes(lower));
 }
-
-
-export function groupByCategory(products) {
-
-    const categories = {};
-
-
-    products.forEach(product => {
-
-        if (!categories[product.category]) {
-
-            categories[product.category] = [];
-
-        }
-
-
-        categories[product.category].push(product);
-
-    });
-
-
-    return categories;
-
-}
-
 
 export function sortProducts(products, sortBy) {
-
     const result = [...products];
-
-
-    if (sortBy === "price-asc") {
-
-        return result.sort((a, b) => {
-
-            return a.price - b.price;
-
-        });
-
-    }
-
-
-    if (sortBy === "price-desc") {
-
-        return result.sort((a, b) => {
-
-            return b.price - a.price;
-
-        });
-
-    }
-
-
-    if (sortBy === "name-asc") {
-
-        return result.sort((a, b) => {
-
-            return a.title.localeCompare(b.title);
-
-        });
-
-    }
-
-
-    if (sortBy === "name-desc") {
-
-        return result.sort((a, b) => {
-
-            return b.title.localeCompare(a.title);
-
-        });
-
-    }
-
-
-    return result;
-
+    // (3) Method: sort
+    return result.sort((a, b) => {
+        if (sortBy === "price-asc") return a.price - b.price;
+        if (sortBy === "price-desc") return b.price - a.price;
+        if (sortBy === "rating-desc") return b.rating - a.rating;
+        if (sortBy === "title-asc") return a.title.localeCompare(b.title);
+        return 0;
+    });
 }

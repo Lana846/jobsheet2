@@ -3,5 +3,5 @@ export const state = {
     search: "",
     category: "all",
     sortBy: "default",
-    status: "idle"
+    status: "idle" 
 };

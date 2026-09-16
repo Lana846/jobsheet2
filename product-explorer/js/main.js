@@ -1,175 +1,75 @@
 import { state } from "./state.js";
-
 import { fetchProducts } from "./api.js";
+import { smartSearch, sortProducts, getProductStatistics } from "./algorithms.js";
+import { renderProducts, renderCategories, renderStatistics, renderStatus } from "./ui.js";
 
-import {
-    linearSearch,
-    sortProducts
-} from "./algorithms.js";
-
-import {
-    renderProducts,
-    renderCategories,
-    renderStatistics,
-    renderStatus
-} from "./ui.js";
-
-
+// (6) Struktur Data: Map (Kamus data global untuk pencarian ID instan)
+const productLookupMap = new Map();
 
 function render() {
-
     let result = [...state.products];
-
-
-    // SEARCH
-
-    result = linearSearch(
-        result,
-        state.search
-    );
-
-
-    // FILTER KATEGORI
-
+    
+    result = smartSearch(result, state.search);
+    
     if (state.category !== "all") {
-
-        result = result.filter(product => {
-
-            return product.category === state.category;
-
-        });
-
+        result = result.filter(p => p.category === state.category);
     }
+    
+    result = sortProducts(result, state.sortBy);
 
+    // Update State
+    state.status = result.length === 0 ? "empty" : "success";
 
-    // SORTING
-
-    result = sortProducts(
-        result,
-        state.sortBy
-    );
-
-
-    // TAMPILKAN DATA
+    // (7) Method: some, every, find (Menghasilkan string info tambahan untuk Statistik)
+    let extraInfo = "";
+    if (result.length > 0) {
+        const isLowStock = result.some(p => p.stock < 10);
+        const isAllGood = result.every(p => p.rating >= 4.0);
+        const cheapestProduct = result.find(p => p.price < 20); // Mencari produk murah pertama
+        
+        if (isLowStock) extraInfo += "⚠️ Ada produk dengan stok menipis. ";
+        if (isAllGood) extraInfo += "⭐ Kualitas terjamin (semua rating >= 4.0). ";
+        if (cheapestProduct) extraInfo += `💡 Produk termurah saat ini: ${cheapestProduct.title}.`;
+    }
 
     renderProducts(result);
-
-    renderStatistics(result);
-
+    renderStatistics(getProductStatistics(result), extraInfo);
 }
 
-
-
-async function loadProducts() {
-
+async function init() {
     try {
-
         state.status = "loading";
-
-
-        renderStatus(
-            "Memuat produk..."
-        );
-
-
-        const products =
-            await fetchProducts();
-
-
-        state.products = products;
-
-
+        renderStatus("Memuat produk dari server...");
+        
+        const data = await fetchProducts();
+        state.products = data;
         state.status = "success";
+        
+        // Memasukkan data ke dalam Map
+        data.forEach(p => productLookupMap.set(p.id, p));
 
-
-        renderCategories(products);
-
-
+        renderCategories(data);
         render();
-
-
-        renderStatus(
-            `Berhasil memuat ${products.length} produk.`
-        );
-
-
+        renderStatus(""); 
     } catch (error) {
-
         state.status = "error";
-
-
-        renderStatus(
-            "Gagal memuat produk."
-        );
-
-
+        renderStatus("Gagal memuat produk. Silakan periksa koneksi internet.");
         console.error(error);
-
     }
-
 }
 
+// Event Listeners
+document.getElementById("search").addEventListener("input", e => { 
+    state.search = e.target.value; 
+    render(); 
+});
+document.getElementById("category").addEventListener("change", e => { 
+    state.category = e.target.value; 
+    render(); 
+});
+document.getElementById("sort").addEventListener("change", e => { 
+    state.sortBy = e.target.value; 
+    render(); 
+});
 
-
-// SEARCH
-
-const searchInput =
-    document.getElementById("search");
-
-
-searchInput.addEventListener(
-    "input",
-    function(event) {
-
-        state.search =
-            event.target.value;
-
-
-        render();
-
-    }
-);
-
-
-
-// CATEGORY
-
-const categorySelect =
-    document.getElementById("category");
-
-
-categorySelect.addEventListener(
-    "change",
-    function(event) {
-
-        state.category =
-            event.target.value;
-
-
-        render();
-
-    }
-);
-
-
-
-// SORT
-
-const sortSelect =
-    document.getElementById("sort");
-
-
-sortSelect.addEventListener(
-    "change",
-    function(event) {
-
-        state.sortBy =
-            event.target.value;
-
-
-        render();
-
-    }
-);
-
-loadProducts();
+init();

@@ -1,121 +1,44 @@
 <!doctype html>
 <html lang="id">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
-    <title>Product Explorer</title>
-
-    <style>
-      * {
-        box-sizing: border-box;
-      }
-
-      body {
-        font-family: Arial, sans-serif;
-        margin: 0;
-        padding: 30px;
-        background-color: #f5f5f5;
-      }
-
-      h1 {
-        margin-bottom: 20px;
-      }
-
-      .controls {
-        display: flex;
-        gap: 10px;
-        margin-bottom: 20px;
-        flex-wrap: wrap;
-      }
-
-      input,
-      select {
-        padding: 10px;
-        border: 1px solid #ccc;
-        border-radius: 5px;
-        font-size: 14px;
-      }
-
-      input {
-        width: 300px;
-      }
-
-      #status {
-        margin-bottom: 15px;
-        font-weight: bold;
-      }
-
-      #statistics {
-        background-color: white;
-        padding: 15px;
-        border-radius: 8px;
-        margin-bottom: 20px;
-      }
-
-      #product-list {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-        gap: 15px;
-      }
-
-      .product-card {
-        background-color: white;
-        padding: 20px;
-        border-radius: 8px;
-        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-      }
-
-      .product-card h3 {
-        margin-top: 0;
-        margin-bottom: 10px;
-      }
-
-      .category {
-        color: #666;
-        font-size: 14px;
-        margin-bottom: 10px;
-      }
-
-      .price {
-        font-size: 18px;
-        font-weight: bold;
-        margin-bottom: 10px;
-      }
-
-      .description {
-        color: #555;
-        font-size: 14px;
-        line-height: 1.5;
-      }
-    </style>
-  </head>
-
-  <body>
-    <h1>Product Explorer</h1>
-
-    <div class="controls">
-      <input type="text" id="search" placeholder="Cari produk..." />
-
-      <select id="category">
-        <option value="all">Semua Kategori</option>
-      </select>
-
-      <select id="sort">
-        <option value="default">Urutan Default</option>
-        <option value="price-asc">Harga Terendah</option>
-        <option value="price-desc">Harga Tertinggi</option>
-        <option value="name-asc">Nama A-Z</option>
-        <option value="name-desc">Nama Z-A</option>
-      </select>
-    </div>
-
-    <div id="status"></div>
-
-    <div id="statistics"></div>
-
-    <div id="product-list"></div>
-
-    <script type="module" src="./js/main.js"></script>
-  </body>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Product Explorer</title>
+  <style>
+    * { box-sizing: border-box; }
+    body { font-family: Arial, sans-serif; margin: 0; padding: 30px; background-color: #f5f5f5; }
+    .controls { display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; }
+    input, select { padding: 10px; border: 1px solid #ccc; border-radius: 5px; }
+    #status { margin-bottom: 15px; font-weight: bold; }
+    #statistics { background-color: white; padding: 15px; border-radius: 8px; margin-bottom: 20px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+    #product-list { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 15px; }
+    .product-card { background-color: white; padding: 15px; border-radius: 8px; box-shadow: 0 2px 6px rgba(0,0,0,0.1); display: flex; flex-direction: column; }
+    .product-card img { width: 100%; height: 150px; object-fit: cover; border-radius: 5px; }
+    .product-card h3 { margin: 10px 0 5px 0; font-size: 16px; }
+    .info { font-size: 14px; margin: 3px 0; color: #555; }
+    .price { font-size: 18px; font-weight: bold; color: #000; margin: 10px 0; }
+    .badge-warning { background-color: #ffebee; color: #c62828; padding: 5px; border-radius: 4px; font-size: 12px; font-weight: bold; margin-top: auto; text-align: center;}
+    .badge-success { background-color: #e8f5e9; color: #2e7d32; padding: 5px; border-radius: 4px; font-size: 12px; font-weight: bold; margin-top: auto; text-align: center;}
+  </style>
+</head>
+<body>
+  <h1>Product Explorer</h1>
+  <div class="controls">
+    <input type="text" id="search" placeholder="Cari produk..." />
+    <select id="category"><option value="all">Semua Kategori</option></select>
+    <select id="sort">
+      <option value="default">Urutan Default</option>
+      <option value="price-asc">Harga Terendah</option>
+      <option value="price-desc">Harga Tertinggi</option>
+      <option value="rating-desc">Rating Tertinggi</option>
+      <option value="title-asc">Nama A-Z</option>
+    </select>
+  </div>
+  
+  <div id="status"></div>
+  <div id="statistics"></div>
+  <div id="product-list"></div>
+  
+  <script type="module" src="./js/main.js"></script>
+</body>
 </html>
